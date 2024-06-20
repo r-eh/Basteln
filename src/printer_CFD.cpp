@@ -20,7 +20,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
-#include"printerCFD.h"
+#include"printer_CFD.h"
 #include"lexer.h"
 #include"fdm.h"
 #include"ghostcell.h"
@@ -65,7 +65,7 @@ Author: Hans Bihs
 
 #include "vtks.h"
 
-printerCFD::printerCFD(lexer* p, fdm *a, ghostcell *pgc) : nodefill(p), eta(p)
+printer_CFD::printer_CFD(lexer* p, fdm *a, ghostcell *pgc) : nodefill(p), eta(p)
 {
     switch (p->P10)
     {
@@ -216,7 +216,7 @@ printerCFD::printerCFD(lexer* p, fdm *a, ghostcell *pgc) : nodefill(p), eta(p)
     }
 }
 
-printerCFD::~printerCFD()
+printer_CFD::~printer_CFD()
 {
     delete pwsf;
 	delete pwsf_theory;
@@ -254,7 +254,7 @@ printerCFD::~printerCFD()
     delete outputFormat;
 }
 
-void printerCFD::start(fdm* a,lexer* p,ghostcell* pgc, turbulence *pturb, heat *pheat, ioflow *pflow, solver *psolv, data *pdata, concentration *pconc, multiphase *pmp, sediment *psed)
+void printer_CFD::start(fdm* a,lexer* p,ghostcell* pgc, turbulence *pturb, heat *pheat, ioflow *pflow, solver *psolv, data *pdata, concentration *pconc, multiphase *pmp, sediment *psed)
 {
 	pgc->gcparax4a(p,a->phi,5);
 	
@@ -440,13 +440,13 @@ void printerCFD::start(fdm* a,lexer* p,ghostcell* pgc, turbulence *pturb, heat *
 
 }
 
-void printerCFD::print_stop(fdm* a,lexer* p,ghostcell* pgc, turbulence *pturb, heat *pheat, ioflow *pflow, solver *psolv, data *pdata, concentration *pconc, multiphase *pmp, sediment *psed)
+void printer_CFD::print_stop(fdm* a,lexer* p,ghostcell* pgc, turbulence *pturb, heat *pheat, ioflow *pflow, solver *psolv, data *pdata, concentration *pconc, multiphase *pmp, sediment *psed)
 {
     print_vtk(a,p,pgc,pturb,pheat,pflow,psolv,pdata,pconc,pmp,psed);
     
 }
 
-void printerCFD::print_vtk(fdm* a,lexer* p,ghostcell* pgc, turbulence *pturb, heat *pheat, ioflow *pflow, solver *psolv, data *pdata, concentration *pconc, multiphase *pmp, sediment *psed)
+void printer_CFD::print_vtk(fdm* a,lexer* p,ghostcell* pgc, turbulence *pturb, heat *pheat, ioflow *pflow, solver *psolv, data *pdata, concentration *pconc, multiphase *pmp, sediment *psed)
 {
     if(p->P180==1)
 	pfsf->start(p,a,pgc);
@@ -454,7 +454,7 @@ void printerCFD::print_vtk(fdm* a,lexer* p,ghostcell* pgc, turbulence *pturb, he
     print3D(a,p,pgc,pturb,pheat,psolv,pdata,pconc,pmp,psed);
 }
 
-void printerCFD::print3D(fdm* a,lexer* p,ghostcell* pgc, turbulence *pturb, heat *pheat, solver *psolv, data *pdata, concentration *pconc, multiphase *pmp, sediment *psed)
+void printer_CFD::print3D(fdm* a,lexer* p,ghostcell* pgc, turbulence *pturb, heat *pheat, solver *psolv, data *pdata, concentration *pconc, multiphase *pmp, sediment *psed)
 {
     if(p->P10!=0)
     {

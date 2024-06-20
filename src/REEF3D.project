@@ -923,7 +923,7 @@
         </VirtualDirectory>
         <File Name="printer.h"/>
         <File Name="print_interface.h"/>
-        <File Name="printerCFD.h"/>
+        <File Name="printer_CFD.h"/>
         <VirtualDirectory Name="Probes">
           <File Name="probe_vel_theory.h"/>
           <File Name="probe_vel.h"/>
@@ -2609,8 +2609,8 @@
         <File Name="vtr3D.cpp"/>
         <File Name="vts3D.cpp"/>
         </VirtualDirectory>
-        <File Name="printerCFD.cpp"/>
-        <File Name="printerCFD_parallel.cpp"/>
+        <File Name="printer_CFD.cpp"/>
+        <File Name="printer_CFD_parallel.cpp"/>
         <VirtualDirectory Name="Probes">
           <File Name="probe_vel_theory.cpp"/>
           <File Name="probe_vel.cpp"/>

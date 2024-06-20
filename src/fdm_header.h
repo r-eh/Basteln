@@ -20,7 +20,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
-#include "printerCFD.h"
+#include "printer_CFD.h"
 
 #include"ioflow.h"
 #include"ioflow_void.h"

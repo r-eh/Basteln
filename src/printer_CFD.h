@@ -20,8 +20,8 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
-#ifndef printerCFD_H_
-#define printerCFD_H_
+#ifndef printer_CFD_H_
+#define printer_CFD_H_
 
 #include"printer.h"
 #include"nodefill.h"
@@ -66,12 +66,12 @@ class print_averaging;
 
 using namespace std;
 
-class printerCFD : public printer, public nodefill 
+class printer_CFD : public printer, public nodefill 
 {
 
 public:
-	printerCFD(lexer*,fdm*,ghostcell*);
-	virtual ~printerCFD();
+	printer_CFD(lexer*,fdm*,ghostcell*);
+	virtual ~printer_CFD();
 	virtual void start(fdm*,lexer*,ghostcell*,turbulence*,heat*,ioflow*,solver*,data*,concentration*,multiphase*,sediment*);
     virtual void print_vtk(fdm*,lexer*,ghostcell*,turbulence*,heat*,ioflow*,solver*,data*,concentration*,multiphase*,sediment*);
     virtual void print_stop(fdm*,lexer*,ghostcell*,turbulence*,heat*,ioflow*,solver*,data*,concentration*,multiphase*,sediment*);

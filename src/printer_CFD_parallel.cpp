@@ -20,7 +20,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
-#include"printerCFD.h"
+#include"printer_CFD.h"
 #include<string>
 #include"lexer.h"
 #include"fdm.h"
@@ -34,7 +34,7 @@ Author: Hans Bihs
 #include"sediment.h"
 #include"print_averaging.h"
 
-void printerCFD::parallelData(fdm* a, lexer* p, ghostcell* pgc, turbulence *pturb, heat *pheat, data *pdata, concentration *pconc, multiphase *pmp, sediment *psed)
+void printer_CFD::parallelData(fdm* a, lexer* p, ghostcell* pgc, turbulence *pturb, heat *pheat, data *pdata, concentration *pconc, multiphase *pmp, sediment *psed)
 {
     int num=0;
 
