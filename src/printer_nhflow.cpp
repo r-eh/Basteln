@@ -274,360 +274,362 @@ void printer_nhflow::print_stop(lexer* p, fdm_nhf* d, ghostcell* pgc, ioflow *pf
 
 void printer_nhflow::print_vtk(lexer* p, fdm_nhf *d, ghostcell* pgc)
 {
-    /*
-    - U, V, W
-    - P
-    - test
-    - breaking
-    */
-    
-    SLICELOOP4
+    if(p->P10!=0)
     {
-    if(d->breaking(i,j)==1)
-    d->breaking_print(i,j)=1.0;
-
-    if(d->breaking(i,j)==0)
-    d->breaking_print(i,j)=0.0;
-    }
-    
-    //
-    //pgc->gcsl_start4(p,d->WL,50);
-    pgc->gcsl_start4(p,d->bed,50);
-    pgc->gcsl_start4(p,d->breaking_print,50);
-    pgc->start4V(p,d->test,50);
-    //pgc->start4(p,d->test,1);
-
-
-    pgc->dgcslpol(p,d->WL,p->dgcsl4,p->dgcsl4_count,14);
-    pgc->dgcslpol(p,d->breaking_print,p->dgcsl4,p->dgcsl4_count,14);
-    pgc->dgcslpol(p,d->bed,p->dgcsl4,p->dgcsl4_count,14);
-
-    d->WL.ggcpol(p);
-    d->breaking_print.ggcpol(p);
-
-    i=-1;
-    j=-1;
-    if(i+p->origin_i==-1 && j+p->origin_j==-1 )
-    d->WL(i,j) = d->WL(i+1,j+1);
-
-
-    //----------
-
-    outputFormat->extent(p,pgc);
-    if(p->mpirank==0)
-    parallelData(p,pgc);
-
-    int num=0;
-    if(p->P15==1)
-    num = printcount;
-    if(p->P15==2)
-    num = p->count;
-    int rank = p->mpirank+1;
-    outputFormat->fileName(name,"NHFLOW",num,rank);
-
-	// Open File
-	ofstream result;
-	result.open(name, ios::binary);
-    if(result.is_open())
-    {
-
-        n=0;
-
-        offset[n]=0;
-        ++n;
-
-        // velocity
-        offset[n]=offset[n-1]+4*(p->pointnum)*3+4;
-        ++n;
-
-        // scalars
-
-        // P
-        offset[n]=offset[n-1]+4*(p->pointnum)+4;
-        ++n;
+        /*
+        - U, V, W
+        - P
+        - test
+        - breaking
+        */
         
-        // omega_sig
-        offset[n]=offset[n-1]+4*(p->pointnum)+4;
-        ++n;
-
-
-        // elevation
-        offset[n]=offset[n-1]+4*(p->pointnum)+4;
-        ++n;
-        
-        // test
-        if(p->P23==1)
+        SLICELOOP4
         {
-        offset[n]=offset[n-1]+4*(p->pointnum)+4;
-        ++n;
-        }
-        // Hs
-        if(p->P110==1)
-        {
-        offset[n]=offset[n-1]+4*(p->pointnum)+4;
-        ++n;
+        if(d->breaking(i,j)==1)
+        d->breaking_print(i,j)=1.0;
+
+        if(d->breaking(i,j)==0)
+        d->breaking_print(i,j)=0.0;
         }
         
-        // solid
-        if(p->P25==1)
+        //
+        //pgc->gcsl_start4(p,d->WL,50);
+        pgc->gcsl_start4(p,d->bed,50);
+        pgc->gcsl_start4(p,d->breaking_print,50);
+        pgc->start4V(p,d->test,50);
+        //pgc->start4(p,d->test,1);
+
+
+        pgc->dgcslpol(p,d->WL,p->dgcsl4,p->dgcsl4_count,14);
+        pgc->dgcslpol(p,d->breaking_print,p->dgcsl4,p->dgcsl4_count,14);
+        pgc->dgcslpol(p,d->bed,p->dgcsl4,p->dgcsl4_count,14);
+
+        d->WL.ggcpol(p);
+        d->breaking_print.ggcpol(p);
+
+        i=-1;
+        j=-1;
+        if(i+p->origin_i==-1 && j+p->origin_j==-1 )
+        d->WL(i,j) = d->WL(i+1,j+1);
+
+
+        //----------
+
+        outputFormat->extent(p,pgc);
+        if(p->mpirank==0)
+        parallelData(p,pgc);
+
+        int num=0;
+        if(p->P15==1)
+        num = printcount;
+        if(p->P15==2)
+        num = p->count;
+        int rank = p->mpirank+1;
+        outputFormat->fileName(name,"NHFLOW",num,rank);
+
+        // Open File
+        ofstream result;
+        result.open(name, ios::binary);
+        if(result.is_open())
         {
-        offset[n]=offset[n-1]+4*(p->pointnum)+4;
-        ++n;
-        offset[n]=offset[n-1]+4*(p->pointnum)+4;
-        ++n;
-        }
 
-        // end scalars
-        outputFormat->offset(p,offset,n);
-        //---------------------------------------------
-        outputFormat->beginning(p,result);
-        
-        if(p->P16==1)
-        {
-        result<<"<FieldData>"<<endl;
-        result<<"<DataArray type=\"Float64\" Name=\"TimeValue\" NumberOfTuples=\"1\"> "<<p->simtime<<endl;
-        result<<"</DataArray>"<<endl;
-        result<<"</FieldData>"<<endl;
-        }
+            n=0;
 
-        n=0;
-        result<<"<PointData >"<<endl;
-        result<<"<DataArray type=\"Float32\" Name=\"velocity\" NumberOfComponents=\"3\" format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
-        ++n;
+            offset[n]=0;
+            ++n;
 
+            // velocity
+            offset[n]=offset[n-1]+4*(p->pointnum)*3+4;
+            ++n;
 
-        result<<"<DataArray type=\"Float32\" Name=\"pressure\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
-        ++n;
-        
-        result<<"<DataArray type=\"Float32\" Name=\"omega_sig\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
-        ++n;
+            // scalars
 
-
-        result<<"<DataArray type=\"Float32\" Name=\"elevation\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
-        ++n;
-        
-        if(p->P23==1)
-        {
-        result<<"<DataArray type=\"Float32\" Name=\"test\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
-        ++n;
-        }
-        
-        if(p->P110==1)
-        {
-        result<<"<DataArray type=\"Float32\" Name=\"Hs\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
-        ++n;
-        }
-
-
-        if(p->P25==1)
-        {
-        result<<"<DataArray type=\"Float32\" Name=\"solid\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
-        ++n;
-        result<<"<DataArray type=\"Float32\" Name=\"Heaviside\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
-        ++n;
-        }
-        
-        result<<"</PointData>"<<endl;
-
-        outputFormat->ending(result,offset,n);
-        //----------------------------------------------------------------------------
-        result<<"<AppendedData encoding=\"raw\">"<<endl<<"_";
-
-        //  Velocities
-        iin=3*4*(p->pointnum);
-        result.write((char*)&iin, sizeof (int));
-        TPLOOP
-        {
-        if(p->j_dir==0)
-        {
-        jj=j;
-        j=0;
-        ffn=float(0.5*(d->U[IJK]+d->U[IJKp1]));
-        j=jj;
-        }
-        
-        
-        if(p->j_dir==1)
-        ffn=float(0.25*(d->U[IJK]+d->U[IJKp1]+d->U[IJp1K]+d->U[IJp1Kp1]));
-        
-        result.write((char*)&ffn, sizeof (float));
-
-
-        if(p->j_dir==0)
-        {
-        jj=j;
-        j=0;
-        ffn=float(0.5*(d->V[IJK]+d->V[IJKp1]));
-        j=jj;
-        }
-
-        if(p->j_dir==1)
-        ffn=float(0.25*(d->V[IJK]+d->V[IJKp1]+d->V[IJp1K]+d->V[IJp1Kp1]));
-        
-        result.write((char*)&ffn, sizeof (float));
-
-
-        if(p->j_dir==0)
-        {
-        jj=j;
-        j=0;
-        ffn=float(0.5*(d->W[IJK]+d->W[Im1JK]));
-        j=jj;
-        }
-
-        if(p->j_dir==1)
-        ffn=float(0.25*(d->W[IJK]+d->W[Im1JK]+d->W[IJK]+d->W[IJm1K]));
-        
-        result.write((char*)&ffn, sizeof (float));
-        }
-
-        //  P
-        iin=4*(p->pointnum);
-        result.write((char*)&iin, sizeof (int));
-        TPLOOP
-        {
+            // P
+            offset[n]=offset[n-1]+4*(p->pointnum)+4;
+            ++n;
             
-        if(p->A520<10)
-        {
+            // omega_sig
+            offset[n]=offset[n-1]+4*(p->pointnum)+4;
+            ++n;
+
+
+            // elevation
+            offset[n]=offset[n-1]+4*(p->pointnum)+4;
+            ++n;
+            
+            // test
+            if(p->P23==1)
+            {
+            offset[n]=offset[n-1]+4*(p->pointnum)+4;
+            ++n;
+            }
+            // Hs
+            if(p->P110==1)
+            {
+            offset[n]=offset[n-1]+4*(p->pointnum)+4;
+            ++n;
+            }
+            
+            // solid
+            if(p->P25==1)
+            {
+            offset[n]=offset[n-1]+4*(p->pointnum)+4;
+            ++n;
+            offset[n]=offset[n-1]+4*(p->pointnum)+4;
+            ++n;
+            }
+
+            // end scalars
+            outputFormat->offset(p,offset,n);
+            //---------------------------------------------
+            outputFormat->beginning(p,result);
+            
+            if(p->P16==1)
+            {
+            result<<"<FieldData>"<<endl;
+            result<<"<DataArray type=\"Float64\" Name=\"TimeValue\" NumberOfTuples=\"1\"> "<<p->simtime<<endl;
+            result<<"</DataArray>"<<endl;
+            result<<"</FieldData>"<<endl;
+            }
+
+            n=0;
+            result<<"<PointData >"<<endl;
+            result<<"<DataArray type=\"Float32\" Name=\"velocity\" NumberOfComponents=\"3\" format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
+            ++n;
+
+
+            result<<"<DataArray type=\"Float32\" Name=\"pressure\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
+            ++n;
+            
+            result<<"<DataArray type=\"Float32\" Name=\"omega_sig\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
+            ++n;
+
+
+            result<<"<DataArray type=\"Float32\" Name=\"elevation\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
+            ++n;
+            
+            if(p->P23==1)
+            {
+            result<<"<DataArray type=\"Float32\" Name=\"test\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
+            ++n;
+            }
+            
+            if(p->P110==1)
+            {
+            result<<"<DataArray type=\"Float32\" Name=\"Hs\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
+            ++n;
+            }
+
+
+            if(p->P25==1)
+            {
+            result<<"<DataArray type=\"Float32\" Name=\"solid\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
+            ++n;
+            result<<"<DataArray type=\"Float32\" Name=\"Heaviside\"  format=\"appended\" offset=\""<<offset[n]<<"\" />"<<endl;
+            ++n;
+            }
+            
+            result<<"</PointData>"<<endl;
+
+            outputFormat->ending(result,offset,n);
+            //----------------------------------------------------------------------------
+            result<<"<AppendedData encoding=\"raw\">"<<endl<<"_";
+
+            //  Velocities
+            iin=3*4*(p->pointnum);
+            result.write((char*)&iin, sizeof (int));
+            TPLOOP
+            {
             if(p->j_dir==0)
             {
             jj=j;
             j=0;
-            ffn=float(d->P[FIJKp1]);
+            ffn=float(0.5*(d->U[IJK]+d->U[IJKp1]));
             j=jj;
             }
-
+            
+            
             if(p->j_dir==1)
-            ffn=float(0.5*(d->P[FIJKp1]+d->P[FIJKp1]));
-        }
-        
-        if(p->A520>=10)
-        {
+            ffn=float(0.25*(d->U[IJK]+d->U[IJKp1]+d->U[IJp1K]+d->U[IJp1Kp1]));
+            
+            result.write((char*)&ffn, sizeof (float));
+
+
             if(p->j_dir==0)
             {
             jj=j;
             j=0;
-            ffn=float(0.25*(d->P[IJK]+d->P[IJKp1]+d->P[Ip1JK]+d->P[Ip1JKp1]));
+            ffn=float(0.5*(d->V[IJK]+d->V[IJKp1]));
             j=jj;
             }
 
             if(p->j_dir==1)
-            ffn=float(0.25*(d->P[IJK]+d->P[IJKp1]+d->P[IJp1K]+d->P[IJp1Kp1]));
-        }
-        
-        result.write((char*)&ffn, sizeof (float));
-        }
-        
-        //  Omega_sig
-        iin=4*(p->pointnum);
-        result.write((char*)&iin, sizeof (int));
-        TPLOOP
-        {
-        if(p->j_dir==0)
-        {
-        jj=j;
-        j=0;
-        ffn=float((d->omegaF[FIJKp1]));
-        j=jj;
-        }
+            ffn=float(0.25*(d->V[IJK]+d->V[IJKp1]+d->V[IJp1K]+d->V[IJp1Kp1]));
+            
+            result.write((char*)&ffn, sizeof (float));
 
-        if(p->j_dir==1)
-        ffn=float(0.5*(d->omegaF[FIJKp1]+d->omegaF[FIJp1Kp1]));
-        
-        result.write((char*)&ffn, sizeof (float));
-        }
 
-        //  elevation
-        iin=4*(p->pointnum)*3;
-        result.write((char*)&iin, sizeof (int));
-        TPLOOP
-        {
-        ffn=float(p->ZN[KP1]*d->WL(i,j) + d->bed(i,j));
-        result.write((char*)&ffn, sizeof (float));
-        }
+            if(p->j_dir==0)
+            {
+            jj=j;
+            j=0;
+            ffn=float(0.5*(d->W[IJK]+d->W[Im1JK]));
+            j=jj;
+            }
 
-        //  test
-        if(p->P23==1)
-        {
-        iin=4*(p->pointnum);
-        result.write((char*)&iin, sizeof (int));
-        TPLOOP
-        {
-        if(p->j_dir==0)
-        {
-        jj=j;
-        j=0;
-        ffn=float(0.5*(d->test[IJK]+d->test[IJKp1]));
-        j=jj;
-        }
-        
-        if(p->j_dir==1)
-        ffn=float(0.25*(d->test[IJK]+d->test[IJKp1]+d->test[IJp1K]+d->test[IJp1Kp1]));
-        
-        result.write((char*)&ffn, sizeof (float));
-        }
-        }
+            if(p->j_dir==1)
+            ffn=float(0.25*(d->W[IJK]+d->W[Im1JK]+d->W[IJK]+d->W[IJm1K]));
+            
+            result.write((char*)&ffn, sizeof (float));
+            }
 
-        //  Hs
-        if(p->P110==1)
-        {
-        iin=4*(p->pointnum);
-        result.write((char*)&iin, sizeof (int));
-        TPLOOP
-        {
-        ffn=float(p->sl_ipol4(d->Hs));
-        result.write((char*)&ffn, sizeof (float));
-        }
-        }
-        
-        //  solid
-        if(p->P25==1)
-        {
-        iin=4*(p->pointnum);
-        result.write((char*)&iin, sizeof (int));
-        TPLOOP
-        {
-        if(p->j_dir==0)
-        {
-        jj=j;
-        j=0;
-        ffn=float(0.5*(d->SOLID[IJK]+d->SOLID[IJKp1]));
-        j=jj;
-        }
-        
-        if(p->j_dir==1)
-        ffn=float(0.25*(d->SOLID[IJK]+d->SOLID[IJKp1]+d->SOLID[IJp1K]+d->SOLID[IJp1Kp1]));
-        
-        result.write((char*)&ffn, sizeof (float));
-        }
-        
-        
-        iin=4*(p->pointnum);
-        result.write((char*)&iin, sizeof (int));
-        TPLOOP
-        {
-        if(p->j_dir==0)
-        {
-        jj=j;
-        j=0;
-        ffn=float(0.5*(d->FHB[IJK]+d->FHB[IJKp1]));
-        j=jj;
-        }
-        
-        if(p->j_dir==1)
-        ffn=float(0.25*(d->FHB[IJK]+d->FHB[IJKp1]+d->FHB[IJp1K]+d->FHB[IJp1Kp1]));
-        
-        result.write((char*)&ffn, sizeof (float));
-        }
-        }
+            //  P
+            iin=4*(p->pointnum);
+            result.write((char*)&iin, sizeof (int));
+            TPLOOP
+            {
+                
+            if(p->A520<10)
+            {
+                if(p->j_dir==0)
+                {
+                jj=j;
+                j=0;
+                ffn=float(d->P[FIJKp1]);
+                j=jj;
+                }
 
-        outputFormat->structureWrite(p,d,result);
+                if(p->j_dir==1)
+                ffn=float(0.5*(d->P[FIJKp1]+d->P[FIJKp1]));
+            }
+            
+            if(p->A520>=10)
+            {
+                if(p->j_dir==0)
+                {
+                jj=j;
+                j=0;
+                ffn=float(0.25*(d->P[IJK]+d->P[IJKp1]+d->P[Ip1JK]+d->P[Ip1JKp1]));
+                j=jj;
+                }
 
-        result.close();
+                if(p->j_dir==1)
+                ffn=float(0.25*(d->P[IJK]+d->P[IJKp1]+d->P[IJp1K]+d->P[IJp1Kp1]));
+            }
+            
+            result.write((char*)&ffn, sizeof (float));
+            }
+            
+            //  Omega_sig
+            iin=4*(p->pointnum);
+            result.write((char*)&iin, sizeof (int));
+            TPLOOP
+            {
+            if(p->j_dir==0)
+            {
+            jj=j;
+            j=0;
+            ffn=float((d->omegaF[FIJKp1]));
+            j=jj;
+            }
 
-        ++printcount;
+            if(p->j_dir==1)
+            ffn=float(0.5*(d->omegaF[FIJKp1]+d->omegaF[FIJp1Kp1]));
+            
+            result.write((char*)&ffn, sizeof (float));
+            }
+
+            //  elevation
+            iin=4*(p->pointnum)*3;
+            result.write((char*)&iin, sizeof (int));
+            TPLOOP
+            {
+            ffn=float(p->ZN[KP1]*d->WL(i,j) + d->bed(i,j));
+            result.write((char*)&ffn, sizeof (float));
+            }
+
+            //  test
+            if(p->P23==1)
+            {
+            iin=4*(p->pointnum);
+            result.write((char*)&iin, sizeof (int));
+            TPLOOP
+            {
+            if(p->j_dir==0)
+            {
+            jj=j;
+            j=0;
+            ffn=float(0.5*(d->test[IJK]+d->test[IJKp1]));
+            j=jj;
+            }
+            
+            if(p->j_dir==1)
+            ffn=float(0.25*(d->test[IJK]+d->test[IJKp1]+d->test[IJp1K]+d->test[IJp1Kp1]));
+            
+            result.write((char*)&ffn, sizeof (float));
+            }
+            }
+
+            //  Hs
+            if(p->P110==1)
+            {
+            iin=4*(p->pointnum);
+            result.write((char*)&iin, sizeof (int));
+            TPLOOP
+            {
+            ffn=float(p->sl_ipol4(d->Hs));
+            result.write((char*)&ffn, sizeof (float));
+            }
+            }
+            
+            //  solid
+            if(p->P25==1)
+            {
+            iin=4*(p->pointnum);
+            result.write((char*)&iin, sizeof (int));
+            TPLOOP
+            {
+            if(p->j_dir==0)
+            {
+            jj=j;
+            j=0;
+            ffn=float(0.5*(d->SOLID[IJK]+d->SOLID[IJKp1]));
+            j=jj;
+            }
+            
+            if(p->j_dir==1)
+            ffn=float(0.25*(d->SOLID[IJK]+d->SOLID[IJKp1]+d->SOLID[IJp1K]+d->SOLID[IJp1Kp1]));
+            
+            result.write((char*)&ffn, sizeof (float));
+            }
+            
+            
+            iin=4*(p->pointnum);
+            result.write((char*)&iin, sizeof (int));
+            TPLOOP
+            {
+            if(p->j_dir==0)
+            {
+            jj=j;
+            j=0;
+            ffn=float(0.5*(d->FHB[IJK]+d->FHB[IJKp1]));
+            j=jj;
+            }
+            
+            if(p->j_dir==1)
+            ffn=float(0.25*(d->FHB[IJK]+d->FHB[IJKp1]+d->FHB[IJp1K]+d->FHB[IJp1Kp1]));
+            
+            result.write((char*)&ffn, sizeof (float));
+            }
+            }
+
+            outputFormat->structureWrite(p,d,result);
+
+            result.close();
+
+            ++printcount;
+        }
+        else
+        cout<<"Failed to open output file."<<endl;
     }
-    else
-    cout<<"Failed to open output file."<<endl;
-
 }

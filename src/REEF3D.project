@@ -964,7 +964,6 @@
           <File Name="print_porous.h"/>
         </VirtualDirectory>
         <VirtualDirectory Name="ParaView">
-          <File Name="vtk3D.h"/>
           <File Name="vtks.h"/>
           <File Name="vtk3D.h"/>
           <File Name="vtu3D.h"/>
