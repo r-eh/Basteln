@@ -26,6 +26,7 @@ Author: Hans Bihs
 class lexer;
 class fdm;
 class fdm2D;
+class fdm_nhf;
 class convection;
 class ghostcell;
 class ioflow;
@@ -55,7 +56,8 @@ public:
     virtual void ini_sflow(lexer*, fdm2D*, ghostcell*)=0;
     virtual void update_sflow(lexer*,fdm2D*,ghostcell*,ioflow*)=0;
     
-    
+    virtual void start_nhflow(lexer*, fdm_nhf*, ghostcell*, ioflow*, solver*){};
+    virtual void ini_nhflow(lexer*, fdm_nhf*, ghostcell*){};
     
     //
     virtual void relax(lexer*,ghostcell*)=0;

@@ -39,6 +39,7 @@ Author: Hans Bihs
 #include"nhflow_header.h"
 #include"6DOF_void.h"
 #include"6DOF_sflow.h"
+#include"sediment_header.h"
 
 void driver::logic_nhflow()
 {    
@@ -206,6 +207,9 @@ void driver::logic_nhflow()
     if(p->A510==3)
 	pnhfmom = new nhflow_momentum_RK3(p,d,pgc,p6dof);
     
-    
-    
+    // Sediment
+    if(p->S10==0)
+    psed = new sediment_void();
+    if(p->S10==1)
+    psed = new sediment_f(p,d,pgc,pturb,pBC);    
 }

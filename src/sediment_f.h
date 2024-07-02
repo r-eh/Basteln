@@ -49,6 +49,7 @@ class sediment_f : public sediment, public bedslope
 {
 public:
     sediment_f(lexer*,fdm*,ghostcell*,turbulence*, patchBC_interface*);
+    sediment_f(lexer*,fdm_nhf*,ghostcell*,turbulence*, patchBC_interface*);
 	virtual ~sediment_f();
     
     // CFD interface
@@ -57,6 +58,7 @@ public:
     virtual void start_susp(lexer*, fdm*, ghostcell*, ioflow*, solver*);
     
     void sediment_logic(lexer*,fdm*,ghostcell*,turbulence*);
+    void sediment_logic(lexer*,fdm_nhf*,ghostcell*,turbulence*);
     void sediment_algorithm_cfd(lexer*, fdm*, ghostcell*, ioflow*, reinitopo*, solver*);
     void prep_cfd(lexer*,fdm*,ghostcell*);
     void fill_PQ_cfd(lexer*,fdm*,ghostcell*);
@@ -75,6 +77,13 @@ public:
     void active_sflow(lexer*, fdm2D*, ghostcell*);
     void active_ini_sflow(lexer*, fdm2D*, ghostcell*);
     void update_sflow(lexer*,fdm2D*,ghostcell*,ioflow*);
+
+    // NHFLOW interface
+    void start_nhflow(lexer*, fdm_nhf*, ghostcell*, ioflow*, solver*);
+    void ini_nhflow(lexer*, fdm_nhf*, ghostcell*);
+    void sediment_algorithm_nhflow(lexer*, fdm_nhf*, ghostcell*, ioflow*, solver*);
+    void fill_PQ_nhflow(lexer*,fdm_nhf*,ghostcell*);
+    void update_nhflow(lexer*,fdm_nhf*,ghostcell*,ioflow*);
     
     
     // ---
@@ -96,6 +105,7 @@ public:
 	void bedlevel(lexer*,fdm*,ghostcell*);
     void waterlevel(lexer*,fdm*,ghostcell*);
 	void topo_zh_update(lexer*,fdm*,ghostcell*,sediment_fdm*);
+    void topo_zh_update(lexer*,fdm_nhf*,ghostcell*,sediment_fdm*);
     void volume_calc(lexer*,fdm*,ghostcell*);
 	void filter(lexer*,ghostcell*,slice&,int,int);
     

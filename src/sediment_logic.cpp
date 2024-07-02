@@ -187,3 +187,126 @@ void sediment_f::sediment_logic(lexer *p, fdm *a,ghostcell *pgc, turbulence *ptu
     
     
 }
+
+void sediment_f::sediment_logic(lexer *p, fdm_nhf *d,ghostcell *pgc, turbulence *pturb)
+{
+    s = new sediment_fdm(p);
+    
+    
+    if(p->S11==0)
+    pbed = new bedload_void();
+
+    if(p->S11==1)
+    pbed = new bedload_VR(p);
+
+    if(p->S11==2)
+    pbed = new bedload_MPM(p);
+	
+	if(p->S11==3)
+    pbed = new bedload_EF(p);
+    
+    if(p->S11==4)
+    pbed = new bedload_EH(p);
+    
+    if(p->S11==5)
+    pbed = new bedload_einstein(p);
+    
+    if(p->S12==0)
+    pcbed = new bedconc_void(p);
+    
+    if(p->S12==1)
+    pcbed = new bedconc_VR(p);
+    
+    
+    if(p->S90==0)
+    pslide=new sandslide_v(p);   
+    
+    if(p->S90==1)
+    pslide=new sandslide_f(p);
+    
+    if(p->S90==2)
+    pslide=new sandslide_f2(p);
+    
+    if(p->S90==3)
+    pslide=new sandslide_f3(p);
+    
+    if(p->S90==4)
+    pslide=new sandslide_pde(p);
+    
+    if(p->S10!=2 && p->A10==6)
+	pvrans = new vrans_v(p,pgc);
+	
+	if(p->S10==2 && p->A10==6)
+	pvrans = new vrans_f(p,pgc);
+    
+    
+    if(p->S80==0)
+    preduce=new reduction_void(p);
+
+    if(p->S80==1)
+    preduce=new reduction_parker(p);
+
+    if(p->S80==2)
+    preduce=new reduction_deyemp(p);
+
+    if(p->S80==3)
+    preduce=new reduction_deyana(p);
+	
+	if(p->S80==4)
+    preduce=new reduction_FD(p);
+    
+    ptopo = new sediment_exner(p,pgc);
+    
+    // susepended diff
+    if(p->S60==0 || p->A10!=6)
+	psuspdiff=new diff_void();
+    
+    if(p->S60==0 || p->A10!=6)
+    psusp = new suspended_void();
+    
+    if(p->S60==0 || p->A10!=6)
+	psuspdisc=new convection_void(p);
+    
+    if(p->A10==6)
+    {    
+    if(p->S60<11 && p->S60>0 && p->j_dir==0)
+	psuspdiff=new idiff2_FS_2D(p);
+    
+    if(p->S60<11 && p->S60>0 && p->j_dir==1)
+	psuspdiff=new idiff2_FS(p);
+	
+	if(p->S60>10)
+	psuspdiff=new idiff2(p);
+    
+    // suspended conv
+	if(p->S60<11 && p->S60>0)
+	psuspdisc=new weno_hj_nug(p);
+    
+    if(p->S60>10 && p->S60>0)
+	psuspdisc=new iweno_hj_nug(p);
+    
+
+    // if(p->S60==2)
+    // psusp = new suspended_RK2(p,a);
+
+    // if(p->S60==3)
+    // psusp = new suspended_RK3(p,a);
+
+    // if(p->S60==11)
+    // psusp = new suspended_IM1(p,a);
+    }
+    
+	
+	p->gcin4a_count=p->gcin_count;
+	p->gcout4a_count=p->gcout_count;
+	
+    
+    prelax = new topo_relax(p);
+	
+	pbedshear  = new bedshear(p,pturb);
+    
+    volume_token=0;
+    
+    
+    
+}

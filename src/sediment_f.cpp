@@ -19,10 +19,12 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------
 Author: Hans Bihs
 --------------------------------------------------------------------*/
-#include"sediment_f.h"
+
+#include"sediment_f.h"
 #include"sediment_fdm.h"
 #include"lexer.h"
 #include"fdm.h"
+#include"fdm_nhf.h"
 #include"ghostcell.h"
 #include"convection.h"
 #include"ioflow.h"
@@ -36,6 +38,20 @@ sediment_f::sediment_f(lexer *p, fdm *a, ghostcell *pgc, turbulence *pturb, patc
     pBC = ppBC;
     
     sediment_logic(p,a,pgc,pturb);
+
+	p->gcin4a_count=p->gcin_count;
+	p->gcout4a_count=p->gcout_count;
+	
+    
+    volume_token=0;
+}
+
+sediment_f::sediment_f(lexer *p, fdm_nhf *d, ghostcell *pgc, turbulence *pturb, patchBC_interface *ppBC): bedslope(p)
+{
+
+    pBC = ppBC;
+    
+    sediment_logic(p,d,pgc,pturb);
 
 	p->gcin4a_count=p->gcin_count;
 	p->gcout4a_count=p->gcout_count;
@@ -103,6 +119,38 @@ void sediment_f::start_sflow(lexer *p, fdm2D *b, ghostcell *pgc, ioflow *pflow, 
 	}
 }
 
-
-
-
+void sediment_f::start_nhflow(lexer *p, fdm_nhf *d, ghostcell *pgc, ioflow *pflow, solver *psolv)
+{
+    // bedshear stress
+    sedcalc=0;
+    
+	if((p->S41==1 && p->count>=p->S43) || (p->S41==2 && p->simtime>=p->S45) || (p->S41==3 && p->simtime/p->wT>=p->S47))
+	{
+		if(p->S42==1 && p->count%p->S44==0)
+		sediment_algorithm_nhflow(p,d,pgc,pflow,psolv);
+		
+		if(p->S42==2 && p->simtime>=p->sedsimtime)
+		{
+		sediment_algorithm_nhflow(p,d,pgc,pflow,psolv);
+		p->sedsimtime = p->simtime + p->S46;
+		}
+		
+		if(p->S42==3  && p->simtime/p->wT>=p->sedwavetime)
+		{            
+		sediment_algorithm_nhflow(p,d,pgc,pflow,psolv);
+		p->sedwavetime = p->simtime/p->wT + p->S48;
+		}
+    
+    sedcalc=1;
+	}
+    
+    if(sedcalc==0)
+    {
+		SLICELOOP4
+		{
+			s->bedzh(i,j)=d->bed(i,j);
+			s->waterlevel(i,j)=d->depth(i,j);
+		}
+		pbedshear->taubed(p,d,pgc,s);
+    }
+}
