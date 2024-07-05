@@ -24,6 +24,7 @@ Author: Hans Bihs
 #include"lexer.h"
 #include"fdm.h"
 #include"fdm2D.h"
+#include"fdm_nhf.h"
 #include"ghostcell.h"
 #include"sediment_fdm.h"
 #include"patchBC_interface.h"
@@ -73,6 +74,23 @@ void sediment_f::ini_sflow(lexer *p, fdm2D *b, ghostcell *pgc)
     
     active_ini_sflow(p,b,pgc);
     
+    ini_parameters(p,pgc);
+    ini_guard(p,pgc);
+    log_ini(p);
+}
+
+void sediment_f::ini_nhflow(lexer *p, fdm_nhf *d,ghostcell *pgc)
+{
+    SLICELOOP4
+	{
+		s->bedzh(i,j)=d->bed(i,j);
+        s->bedzh0(i,j)=d->bed(i,j);
+        s->active(i,j)=1;
+        s->waterlevel(i,j)=d->depth(i,j);
+	}
+	
+	pgc->gcsl_start4(p,s->bedzh,1);
+	
     ini_parameters(p,pgc);
     ini_guard(p,pgc);
     log_ini(p);

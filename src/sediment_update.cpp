@@ -24,6 +24,7 @@ Author: Hans Bihs
 #include"lexer.h"
 #include"fdm.h"
 #include"fdm2D.h"
+#include"fdm_nhf.h"
 #include"ghostcell.h"
 #include"ioflow.h"
 #include"sediment_fdm.h"
@@ -79,4 +80,37 @@ void sediment_f::update_sflow(lexer *p, fdm2D *b, ghostcell *pgc, ioflow *pflow)
     
     active_sflow(p,b,pgc);
     
+}
+
+void sediment_f::update_nhflow(lexer *p, fdm_nhf *d,ghostcell *pgc, ioflow *pflow)
+{
+    topo_zh_update(p,d,pgc,s);
+    bedchange_update(p, pgc);
+    
+    // volume_calc(p,a,pgc);
+    
+    pgc->start1V(p,d->U,10);
+	pgc->start2V(p,d->V,11);
+	pgc->start3V(p,d->W,12);
+    
+    if(p->mpirank==0)
+    cout<<"Topo: update grid..."<<endl;
+    
+    
+    // if(p->S10==1 && p->G3==0)
+    // pgc->topo_update(p,a);
+    
+    // if(p->S10==1 && p->G3==1)
+    // pgc->gcdf_update(p,a);
+    
+    // if(p->S10==2)
+    // pvrans->sed_update(p,a,pgc);
+    
+    // pflow->gcio_update(p,a,pgc);
+    
+    // bedlevel(p,a,pgc); 
+    
+    // active_cfd(p,a,pgc);
+	
+	// pgc->start4(p,a->conc,40);
 }

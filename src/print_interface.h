@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef PRINT_INTERFACE_H_
+#define PRINT_INTERFACE_H_
+
 #include"printer.h"
 #include"nodefill.h"
 #include"field5.h"
@@ -47,9 +50,6 @@ class bedshear_probe;
 class sloshing_force;
 class print_porous;
 
-#ifndef PRINT_INTERFACE_H_
-#define PRINT_INTERFACE_H_
-
 using namespace std;
 
 class print_interface : public printer, public nodefill 
@@ -63,7 +63,7 @@ public:
 
 private:
     void print3D(fdm*,lexer*,ghostcell*,turbulence*,heat*,solver*,data*,concentration*,sediment*);
-    void pvtu(fdm*,lexer*,ghostcell*,turbulence*,heat*,data*,concentration*,sediment*);
+    void pvtk(fdm*,lexer*,ghostcell*,turbulence*,heat*,data*,concentration*,sediment*);
     void header(fdm*,lexer*,ghostcell*);
     void name_iter(fdm*,lexer*,ghostcell*);
     void name_time(fdm*,lexer*,ghostcell*);

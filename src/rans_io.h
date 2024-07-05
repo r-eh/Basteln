@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef RANS_IO_H_
+#define RANS_IO_H_
+
 #include"turbulence.h"
 #include"field4.h"
 #include"fieldint4.h"
@@ -31,9 +34,6 @@ class fdm;
 class ghostcell;
 
 using namespace std;
-
-#ifndef RANS_IO_H_
-#define RANS_IO_H_
 
 class rans_io : public turbulence, public strain
 {
@@ -55,9 +55,9 @@ public:
     virtual void kinget(int,int,int,double);
     virtual void epsget(int,int,int,double);
 
-    virtual void name_pvtu(lexer*, fdm*, ghostcell*,ofstream&);
-    virtual void name_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
-    virtual void offset_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+    virtual void name_pvtk(lexer*, fdm*, ghostcell*,ofstream&);
+    virtual void name_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+    virtual void offset_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
     
     field4 kin,eps,eddyv0;
 	fieldint4 wallf;

@@ -23,6 +23,7 @@ Author: Hans Bihs
 #include"sediment_f.h"
 #include"lexer.h"
 #include"fdm.h"
+#include"fdm_nhf.h"
 #include"ghostcell.h"
 #include"sediment_fdm.h"
 #include"topo_relax.h"
@@ -75,6 +76,19 @@ void sediment_f::topo_zh_update(lexer *p, fdm *a,ghostcell *pgc, sediment_fdm *s
 	pgc->start4a(p,a->topo,150);
     
     pgc->gcsl_start4(p,a->bed,50);
+}
+
+void sediment_f::topo_zh_update(lexer *p, fdm_nhf *d,ghostcell *pgc, sediment_fdm *s)
+{
+    for(int qn=0;qn<3;++qn)
+    prelax->start(p,pgc,s);
+    
+	pgc->gcsl_start4(p,s->bedzh,1);
+    
+    SLICELOOP4
+	d->bed(i,j)=s->bedzh(i,j);
+    
+    pgc->gcsl_start4(p,d->bed,50);
 }
 
 void sediment_f::bedchange_update(lexer *p, ghostcell *pgc)

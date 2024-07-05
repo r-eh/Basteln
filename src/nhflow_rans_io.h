@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef NHFLOW_RANS_IO_H_
+#define NHFLOW_RANS_IO_H_
+
 #include"nhflow_turbulence.h"
 #include"nhflow_strain.h"
 #include<fstream>
@@ -29,9 +32,6 @@ class fdm_nhf;
 class ghostcell;
 
 using namespace std;
-
-#ifndef NHFLOW_RANS_IO_H_
-#define NHFLOW_RANS_IO_H_
 
 class nhflow_rans_io : public nhflow_turbulence, public nhflow_strain
 {
@@ -53,9 +53,9 @@ public:
     virtual void kinget(int,int,int,double);
     virtual void epsget(int,int,int,double);
 
-    virtual void name_pvtu(lexer*, fdm_nhf*, ghostcell*,ofstream&);
-    virtual void name_vtu(lexer*, fdm_nhf*, ghostcell*,ofstream&, int*, int &);
-    virtual void offset_vtu(lexer*, fdm_nhf*, ghostcell*,ofstream&, int*, int &);
+    virtual void name_pvtk(lexer*, fdm_nhf*, ghostcell*,ofstream&);
+    virtual void name_vtk(lexer*, fdm_nhf*, ghostcell*,ofstream&, int*, int &);
+    virtual void offset_vtk(lexer*, fdm_nhf*, ghostcell*,ofstream&, int*, int &);
     
     double *KIN,*EPS,*EV0;
     int *WALLF;

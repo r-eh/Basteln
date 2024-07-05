@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef PRINTER_H_
+#define PRINTER_H_
+
 class fdm;
 class lexer;
 class ghostcell;
@@ -33,9 +36,6 @@ class concentration;
 class multiphase;
 class sediment;
 
-#ifndef PRINTER_H_
-#define PRINTER_H_
-
 using namespace std;
 
 class printer
@@ -43,7 +43,7 @@ class printer
 public:
 	virtual void start(fdm*,lexer*,ghostcell*,turbulence*,heat*,ioflow*,solver*,data*,concentration*,multiphase*,sediment*)=0;
     
-    virtual void print_vtu(fdm*,lexer*,ghostcell*,turbulence*,heat*,ioflow*,solver*,data*,concentration*,multiphase*,sediment*)=0;
+    virtual void print_vtk(fdm*,lexer*,ghostcell*,turbulence*,heat*,ioflow*,solver*,data*,concentration*,multiphase*,sediment*)=0;
     
     virtual void print_stop(fdm*,lexer*,ghostcell*,turbulence*,heat*,ioflow*,solver*,data*,concentration*,multiphase*,sediment*)=0;
 

@@ -119,6 +119,26 @@ void driver::driver_ini_nhflow()
     // forcing ini
     pnhfdf->forcing_ini(p,d,pgc);
 
+    // Sediment
+	if(p->S10>0)
+    {
+    psed->ini_nhflow(p,d,pgc);
+    // for(int qn=0;qn<5;++qn)
+    // psed->relax(p,pgc);
+    // preto->start(p,a,pgc,a->topo);
+    // psed->update_cfd(p,a,pgc,pflow,preto);
+    // pgc->start4a(p,a->topo,150);
+    
+    //     // Solid Forcing
+    //     if(p->G3==1)
+    //     {
+    //     if(p->mpirank==0)
+    //     cout<<"driver solid forcing initialize"<<endl;
+        
+    //     pgc->solid_forcing_ini(p,a);
+    //     }
+    }
+
     pnhfsf->ini(p,d,pgc,pflow,d->U,d->V,d->W);
     pnhfsf->kinematic_fsf(p,d,d->U,d->V,d->W,d->eta);
     //pnhfmom->inidisc(p,d,pgc,pnhfsf);

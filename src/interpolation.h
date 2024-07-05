@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef INTERPOLATION_H_
+#define INTERPOLATION_H_
+
 #include"boundarycheck.h"
 
 class fdm;
@@ -27,9 +30,6 @@ class lexer;
 class field;
 class slice;
 class sliceint;
-
-#ifndef INTERPOLATION_H_
-#define INTERPOLATION_H_
 
 using namespace std;
 
@@ -43,6 +43,10 @@ public:
     double ccipol2(field&,double,double,double);
     double ccipol3(field&,double,double,double);
     double ccipol4(field&,double,double,double);
+    double ccipol1(double*,double,double,double);
+    double ccipol2(double*,double,double,double);
+    double ccipol3(double*,double,double,double);
+    double ccipol4(double*,double,double,double);
     double ccipol4phi(fdm*,field&,double,double,double);
     double ccipol4press(fdm*,field&,double,double,double);
     double ccipol4V(double*,double,double,double);
@@ -51,6 +55,10 @@ public:
     double ccipol2_a(field&,double,double,double);
     double ccipol3_a(field&,double,double,double);
     double ccipol4_a(field&,double,double,double);
+    double ccipol1_a(double*,double,double,double);
+    double ccipol2_a(double*,double,double,double);
+    double ccipol3_a(double*,double,double,double);
+    double ccipol4_a(double*,double,double,double);
     double ccipol4_b(field&,double,double,double);
     double ccipol4_kin(field&,double,double,double);
     
@@ -75,10 +83,15 @@ public:
     double lint2(field&,int&,int&,int&,double,double,double);
     double lint3(field&,int&,int&,int&,double,double,double);
     double lint4(field&,int&,int&,int&,double,double,double);
+    double lint1(double*,int&,int&,int&,double,double,double);
+    double lint2(double*,int&,int&,int&,double,double,double);
+    double lint3(double*,int&,int&,int&,double,double,double);
+    double lint4(double*,int&,int&,int&,double,double,double);
     double lint4V(double*,int&,int&,int&,double,double,double);
     double lint7V(double*,int&,int&,int&,double,double,double);
     double lint4phi(fdm*,field&,int&,int&,int&,double,double,double);
     double lint_a(field&,int&,int&,int&,double,double,double);
+    double lint_a(double*,int&,int&,int&,double,double,double);
     double lint4b(field&,int&,int&,int&,double,double,double);
     double lint4kin(field&,int&,int&,int&,double,double,double);
     
@@ -86,9 +99,14 @@ public:
     double lint2_2D(field&,int&,int&,int&,double,double,double);
     double lint3_2D(field&,int&,int&,int&,double,double,double);
     double lint4_2D(field&,int&,int&,int&,double,double,double);
+    double lint1_2D(double*,int&,int&,int&,double,double,double);
+    double lint2_2D(double*,int&,int&,int&,double,double,double);
+    double lint3_2D(double*,int&,int&,int&,double,double,double);
+    double lint4_2D(double*,int&,int&,int&,double,double,double);
     double lint4V_2D(double*,int&,int&,int&,double,double,double);
     double lint7V_2D(double*,int&,int&,int&,double,double,double);
     double lint_a_2D(field&,int&,int&,int&,double,double,double);
+    double lint_a_2D(double*,int&,int&,int&,double,double,double);
     double lint4phi_2D(fdm*,field&,int&,int&,int&,double,double,double);
     
     double tricubic4a(field&,int&,int&,int&,double,double,double);

@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef DATA_F_H_
+#define DATA_F_H_
+
 #include"data.h"
 #include"increment.h"
 #include"field4.h"
@@ -30,9 +33,6 @@ class ghostcell;
 
 using namespace std;
 
-#ifndef DATA_F_H_
-#define DATA_F_H_
-
 class data_f : public data, public increment
 {
 public:
@@ -41,9 +41,9 @@ public:
 	virtual void start(lexer*, fdm*, ghostcell*);
 	
 	virtual void print_3D(lexer*, fdm*, ghostcell*,ofstream&);
-	virtual void name_pvtu(lexer*, fdm*, ghostcell*,ofstream&);
-    virtual void name_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
-    virtual void offset_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+	virtual void name_pvtk(lexer*, fdm*, ghostcell*,ofstream&);
+    virtual void name_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+    virtual void offset_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
 
 private:
 	

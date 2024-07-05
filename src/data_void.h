@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef DATA_VOID_H_
+#define DATA_VOID_H_
+
 #include"data.h"
 
 class lexer;
@@ -27,9 +30,6 @@ class fdm;
 class ghostcell;
 
 using namespace std;
-
-#ifndef DATA_VOID_H_
-#define DATA_VOID_H_
 
 class data_void : public data
 {
@@ -39,9 +39,9 @@ public:
 	virtual void start(lexer*, fdm*, ghostcell*);
 	
 	virtual void print_3D(lexer*, fdm*, ghostcell*,ofstream&);
-	virtual void name_pvtu(lexer*, fdm*, ghostcell*,ofstream&);
-    virtual void name_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
-    virtual void offset_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+	virtual void name_pvtk(lexer*, fdm*, ghostcell*,ofstream&);
+    virtual void name_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+    virtual void offset_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
 };
 
 #endif

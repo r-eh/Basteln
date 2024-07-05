@@ -39,6 +39,7 @@ Author: Hans Bihs
 #include"nhflow_header.h"
 #include"6DOF_void.h"
 #include"6DOF_sflow.h"
+#include"sediment_header.h"
 
 void driver::logic_nhflow()
 {    
@@ -164,10 +165,7 @@ void driver::logic_nhflow()
 	if(p->P150>0)
 	pdata = new data_f(p,a,pgc);
     
-    if(p->P10==2)
-    pnhfprint = new nhflow_vts3D(p,d,pgc);
-    else
-    pnhfprint = new nhflow_vtu3D(p,d,pgc);
+    pnhfprint = new printer_nhflow(p,d,pgc);
     
 //VRANS
     if(p->B269==0)
@@ -209,6 +207,9 @@ void driver::logic_nhflow()
     if(p->A510==3)
 	pnhfmom = new nhflow_momentum_RK3(p,d,pgc,p6dof);
     
-    
-    
+    // Sediment
+    if(p->S10==0)
+    psed = new sediment_void();
+    if(p->S10==1)
+    psed = new sediment_f(p,d,pgc,pturb,pBC);    
 }

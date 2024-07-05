@@ -133,6 +133,114 @@ double interpolation::lint4_2D(field& f, int& i,int& j, int& k, double wa, doubl
     return value;
 }
 
+double interpolation::lint1_2D(double* b, int& i,int& j, int& k, double wa, double wb, double wc)
+{
+    v1=v2=v3=v4=0.0;
+    
+    jj=j;
+    j=0;
+
+pip=4;
+    if(p->flag1[IJK]>TOPO_FLAG)
+    v1=b[IJK];
+    if(p->flag1[IJKp1]>TOPO_FLAG)
+    v2=b[IJKp1];
+    if(p->flag1[Ip1JK]>TOPO_FLAG)
+    v3=b[Ip1JK];
+    if(p->flag1[Ip1JKp1]>TOPO_FLAG)
+    v4=b[Ip1JKp1];
+pip=0;
+    j=jj;
+
+    x1 = wa*v1 + (1.0-wa)*v3;
+    x2 = wa*v2 + (1.0-wa)*v4;
+
+    value = wc*x1 +(1.0-wc)*x2;
+
+    return value;
+}
+
+double interpolation::lint2_2D(double* b, int& i,int& j, int& k, double wa, double wb, double wc)
+{
+    v1=v2=v3=v4=0.0;
+    
+    jj=j;
+    j=0;
+
+pip=4;
+    if(p->flag2[IJK]>TOPO_FLAG)
+    v1=b[IJK];
+    if(p->flag2[IJKp1]>TOPO_FLAG)
+    v2=b[IJKp1];
+    if(p->flag2[Ip1JK]>TOPO_FLAG)
+    v3=b[Ip1JK];
+    if(p->flag2[Ip1JKp1]>TOPO_FLAG)
+    v4=b[Ip1JKp1];
+pip=0;
+    j=jj;
+
+    x1 = wa*v1 + (1.0-wa)*v3;
+    x2 = wa*v2 + (1.0-wa)*v4;
+
+    value = wc*x1 +(1.0-wc)*x2;
+
+ return value;
+}
+
+double interpolation::lint3_2D(double* b, int& i,int& j, int& k, double wa, double wb, double wc)
+{
+    v1=v2=v3=v4=0.0;
+    
+    jj=j;
+    j=0;
+
+pip=4;
+    if(p->flag3[IJK]>TOPO_FLAG)
+    v1=b[IJK];
+    if(p->flag3[IJKp1]>TOPO_FLAG)
+    v2=b[IJKp1];
+    if(p->flag3[Ip1JK]>TOPO_FLAG)
+    v3=b[Ip1JK];
+    if(p->flag3[Ip1JKp1]>TOPO_FLAG)
+    v4=b[Ip1JKp1];
+pip=0;
+    j=jj;
+
+    x1 = wa*v1 + (1.0-wa)*v3;
+    x2 = wa*v2 + (1.0-wa)*v4;
+
+    value = wc*x1 +(1.0-wc)*x2;
+
+    return value;
+}
+
+double interpolation::lint4_2D(double* f, int& i,int& j, int& k, double wa, double wb, double wc)
+{
+    v1=v2=v3=v4=0.0;
+    
+    jj=j;
+    j=0;
+
+    pip=4;
+    if(p->flag4[IJK]>TOPO_FLAG)
+    v1=f[IJK];
+    if(p->flag4[IJKp1]>TOPO_FLAG)
+    v2=f[IJKp1];
+    if(p->flag4[Ip1JK]>TOPO_FLAG)
+    v3=f[Ip1JK];
+    if(p->flag4[Ip1JKp1]>TOPO_FLAG)
+    v4=f[Ip1JKp1];
+    pip=0;
+    j=jj;
+
+    x1 = wa*v1 + (1.0-wa)*v3;
+    x2 = wa*v2 + (1.0-wa)*v4;
+    
+    value = wc*x1 +(1.0-wc)*x2;
+
+    return value;
+}
+
 double interpolation::lint4phi_2D(fdm *a, field& b, int& i,int& j, int& k, double wa, double wb, double wc)
 {	
     double epphi=1.6*p->DXM;
@@ -172,6 +280,25 @@ double interpolation::lint_a_2D(field& f, int& i,int& j, int& k, double wa, doub
 
     x1 = wa*f(i,j,k)   + (1.0-wa)*f(i+1,j,k);
     x2 = wa*f(i,j,k+1) + (1.0-wa)*f(i+1,j,k+1);
+
+    pip=0;
+    j=jj;
+
+    value = wc*x1 +(1.0-wc)*x2;
+
+    return value;
+
+}
+
+double interpolation::lint_a_2D(double* f, int& i,int& j, int& k, double wa, double wb, double wc)
+{
+    jj=j;
+    j=0;
+        
+    pip=4;
+
+    x1 = wa*f[IJK]   + (1.0-wa)*f[Ip1JK];
+    x2 = wa*f[IJKp1] + (1.0-wa)*f[Ip1JKp1];
 
     pip=0;
     j=jj;

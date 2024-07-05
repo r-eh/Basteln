@@ -20,13 +20,13 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef CONCENTRATION_VOID_H_
+#define CONCENTRATION_VOID_H_
+
 #include"concentration.h"
 #include<fstream>
 
 using namespace std;
-
-#ifndef CONCENTRATION_VOID_H_
-#define CONCENTRATION_VOID_H_
 
 class concentration_void : public concentration
 {
@@ -42,9 +42,9 @@ public:
     virtual void concentration_ini(lexer*, fdm*, ghostcell*,concentration*);
     virtual double val(int,int,int);
 
-    virtual void name_pvtu(lexer*, fdm*, ghostcell*,ofstream&);
-    virtual void name_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
-    virtual void offset_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+    virtual void name_pvtk(lexer*, fdm*, ghostcell*,ofstream&);
+    virtual void name_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+    virtual void offset_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
 };
 
 #endif

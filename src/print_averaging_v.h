@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef PRINT_AVERAGING_V_H_
+#define PRINT_AVERAGING_V_H_
+
 #include"print_averaging.h"
 #include"increment.h"
 #include"field1.h"
@@ -30,9 +33,6 @@ Author: Hans Bihs
 
 using namespace std;
 
-#ifndef PRINT_AVERAGING_V_H_
-#define PRINT_AVERAGING_V_H_
-
 class print_averaging_v : public print_averaging, public increment
 {
 public:
@@ -41,9 +41,9 @@ public:
     
     virtual void averaging(lexer *p, fdm *a, ghostcell *pgc, heat*);
     
-    virtual void name_pvtu(lexer *p, fdm *a, ghostcell *pgc, ofstream &result);
-    virtual void name_vtu(lexer *p, fdm *a, ghostcell *pgc, ofstream &result, int *offset, int &n);
-    virtual void offset_vtu(lexer *p, fdm *a, ghostcell *pgc, ofstream &result, int *offset, int &n);
+    virtual void name_pvtk(lexer *p, fdm *a, ghostcell *pgc, ofstream &result);
+    virtual void name_vtk(lexer *p, fdm *a, ghostcell *pgc, ofstream &result, int *offset, int &n);
+    virtual void offset_vtk(lexer *p, fdm *a, ghostcell *pgc, ofstream &result, int *offset, int &n);
     virtual void print_3D(lexer* p, fdm *a, ghostcell *pgc, ofstream &result);
 
 

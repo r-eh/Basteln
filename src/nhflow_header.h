@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef NHFLOW_HEADER_H_
+#define NHFLOW_HEADER_H_
+
 #include"nhflow.h"
 #include"nhflow_f.h"
 #include"nhflow_v.h"
@@ -29,8 +32,7 @@ Author: Hans Bihs
 #include"nhflow_fsf_v.h"
 
 #include"nhflow_printer.h"
-#include"nhflow_vtu3D.h"
-#include"nhflow_vts3D.h"
+#include"printer_nhflow.h"
 #include"nhflow_timestep.h"
 #include"nhflow_momentum.h"
 #include"nhflow_turbulence.h"
@@ -61,3 +63,5 @@ Author: Hans Bihs
 #include"nhflow_reconstruct_hires.h"
 #include"nhflow_reconstruct_wenograd.h"
 #include"nhflow_reconstruct_weno.h"
+
+#endif

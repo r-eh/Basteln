@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef CONCENTRATION_H_
+#define CONCENTRATION_H_
+
 class fdm;
 class lexer;
 class convection;
@@ -32,9 +35,6 @@ class turbulence;
 
 using namespace std;
 
-#ifndef CONCENTRATION_H_
-#define CONCENTRATION_H_
-
 class concentration
 {
 public:
@@ -46,9 +46,9 @@ public:
 	virtual void print_3D(lexer*, fdm*, ghostcell *pgc, ofstream&)=0;
 	virtual double val(int,int,int)=0;
 
-    virtual void name_pvtu(lexer*, fdm*, ghostcell*,ofstream&)=0;
-    virtual void name_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &)=0;
-    virtual void offset_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &)=0;
+    virtual void name_pvtk(lexer*, fdm*, ghostcell*,ofstream&)=0;
+    virtual void name_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &)=0;
+    virtual void offset_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &)=0;
 };
 
 #endif

@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef NHFLOW_TURBULENCE_H_
+#define NHFLOW_TURBULENCE_H_
+
 class fdm_nhf;
 class lexer;
 class nhflow_scalar_convection;
@@ -30,9 +33,6 @@ class ioflow;
 class vrans;
 
 #include<fstream>
-
-#ifndef NHFLOW_TURBULENCE_H_
-#define NHFLOW_TURBULENCE_H_
 
 using namespace std;
 
@@ -59,9 +59,9 @@ public:
     virtual void kinget(int,int,int,double)=0;
     virtual void epsget(int,int,int,double)=0;
 
-    virtual void name_pvtu(lexer*, fdm_nhf*, ghostcell*,ofstream&)=0;
-    virtual void name_vtu(lexer*, fdm_nhf*, ghostcell*,ofstream&, int*, int &)=0;
-    virtual void offset_vtu(lexer*, fdm_nhf*, ghostcell*,ofstream&, int*, int &)=0;
+    virtual void name_pvtk(lexer*, fdm_nhf*, ghostcell*,ofstream&)=0;
+    virtual void name_vtk(lexer*, fdm_nhf*, ghostcell*,ofstream&, int*, int &)=0;
+    virtual void offset_vtk(lexer*, fdm_nhf*, ghostcell*,ofstream&, int*, int &)=0;
 	
 	double uref;
 };

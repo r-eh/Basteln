@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef FNPF_VTP_FSF_H_
+#define FNPF_VTP_FSF_H_
+
 #include"increment.h"
 
 class lexer;
@@ -28,9 +31,6 @@ class ghostcell;
 class ioflow;
 
 using namespace std;
-
-#ifndef FNPF_VTP_FSF_H_
-#define FNPF_VTP_FSF_H_
 
 class fnpf_vtp_fsf : public increment
 {
@@ -44,7 +44,7 @@ public:
 private:
 	
 	void etend(lexer*,fdm_fnpf*,ghostcell*);
-	void pvtu(lexer*,fdm_fnpf*,ghostcell*);
+	void pvtp(lexer*,fdm_fnpf*,ghostcell*);
 	void name_iter(lexer*,fdm_fnpf*,ghostcell*);
     void piecename(lexer*,fdm_fnpf*,ghostcell*,int);
 	

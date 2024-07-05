@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef HEAT_PRINT_H_
+#define HEAT_PRINT_H_
+
 #include"heat.h"
 #include"increment.h"
 #include"field4.h"
@@ -32,9 +35,6 @@ class ghostcell;
 
 using namespace std;
 
-#ifndef HEAT_PRINT_H_
-#define HEAT_PRINT_H_
-
 class heat_print : public heat, increment
 {
 public:
@@ -45,9 +45,9 @@ public:
     virtual void heat_ini(lexer*, fdm*, ghostcell*, heat*);
     virtual double val(int,int,int);
 
-    virtual void name_pvtu(lexer*, fdm*, ghostcell*,ofstream&);
-    virtual void name_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
-    virtual void offset_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+    virtual void name_pvtk(lexer*, fdm*, ghostcell*,ofstream&);
+    virtual void name_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+    virtual void offset_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
 
     field4 T;
 	fluid_update *pupdate;

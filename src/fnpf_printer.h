@@ -20,20 +20,20 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef FNPF_PRINTER_H_
+#define FNPF_PRINTER_H_
+
 class lexer;
 class fdm_fnpf;
 class ghostcell;
 class ioflow;
-
-#ifndef FNPF_PRINTER_H_
-#define FNPF_PRINTER_H_
 
 class fnpf_printer
 {
 public:
 	virtual void start(lexer*,fdm_fnpf*,ghostcell*,ioflow*)=0;
     virtual void print_stop(lexer*,fdm_fnpf*,ghostcell*)=0;
-    virtual void print_vtu(lexer*,fdm_fnpf*,ghostcell*)=0;
+    virtual void print_vtk(lexer*,fdm_fnpf*,ghostcell*)=0;
 };
 
 #endif

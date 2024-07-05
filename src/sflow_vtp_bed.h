@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef SFLOW_VTP_BED_H_
+#define SFLOW_VTP_BED_H_
+
 #include"increment.h"
 
 class lexer;
@@ -29,9 +32,6 @@ class sflow_print_wsf;
 class sediment;
 
 using namespace std;
-
-#ifndef SFLOW_VTP_BED_H_
-#define SFLOW_VTP_BED_H_
 
 class sflow_vtp_bed : public increment
 {
@@ -44,7 +44,7 @@ public:
 private:
 	void print2D(lexer*,fdm2D*,ghostcell*,sediment*);
 	void etend(lexer*,fdm2D*,ghostcell*);
-	void pvtu(lexer*,fdm2D*,ghostcell*,sediment*);
+	void pvtp(lexer*,fdm2D*,ghostcell*,sediment*);
 	void name_iter(lexer*,fdm2D*,ghostcell*);
     void piecename(lexer*,fdm2D*,ghostcell*,int);
 	

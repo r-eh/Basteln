@@ -19,9 +19,11 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------
 Author: Hans Bihs
 --------------------------------------------------------------------*/
-#include"sediment_f.h"
+
+#include"sediment_f.h"
 #include"lexer.h"
 #include"fdm.h"
+#include"fdm_nhf.h"
 #include"ghostcell.h"
 #include"sediment_fdm.h"
 #include"bedshear.h"
@@ -86,6 +88,36 @@ void sediment_f::fill_PQ_sflow(lexer *p, fdm2D *b,ghostcell *pgc,slice &P, slice
     
     SLICELOOP2
     s->Q(i,j) = Q(i,j);
+    
+    pgc->gcsl_start1(p,s->P,10);
+	pgc->gcsl_start2(p,s->Q,11);
+}
+
+void sediment_f::fill_PQ_nhflow(lexer *p, fdm_nhf *d,ghostcell *pgc)
+{
+    double zval,xip,yip;
+    
+    SLICELOOP1
+    {
+    k=0;
+    
+    xip= p->XN[IP1];
+	yip= p->YP[JP];
+    zval = 0.5*(s->bedzh(i,j)+s->bedzh(i+1,j)) + 1.6*p->DZN[k];
+    
+    s->P(i,j) = p->ccipol1_a(d->U,xip,yip,zval);
+    }
+    
+    SLICELOOP2
+    {
+    k=0;
+    
+    xip= p->XP[IP];
+	yip= p->YN[JP1];
+    zval = 0.5*(s->bedzh(i,j)+s->bedzh(i,j+1)) + 1.6*p->DZN[k];
+    
+    s->Q(i,j) = p->ccipol2_a(d->V,xip,yip,zval);
+    }
     
     pgc->gcsl_start1(p,s->P,10);
 	pgc->gcsl_start2(p,s->Q,11);

@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef CONCENTRATION_IO_H_
+#define CONCENTRATION_IO_H_
+
 #include"concentration.h"
 #include"increment.h"
 #include"field4.h"
@@ -32,9 +35,6 @@ class ghostcell;
 
 using namespace std;
 
-#ifndef CONCENTRATION_IO_H_
-#define CONCENTRATION_IO_H_
-
 class concentration_io : public concentration, increment
 {
 public:
@@ -45,9 +45,9 @@ public:
     virtual void ini(lexer*, fdm*, ghostcell*, concentration *pconcentration);
     virtual double val(int,int,int);
 
-    virtual void name_pvtu(lexer*, fdm*, ghostcell*,ofstream&);
-    virtual void name_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
-    virtual void offset_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+    virtual void name_pvtk(lexer*, fdm*, ghostcell*,ofstream&);
+    virtual void name_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+    virtual void offset_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
 
     field4 C;
 	fluid_update *pupdate;

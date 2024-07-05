@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef VORTICITY_H_
+#define VORTICITY_H_
+
 class fdm;
 class lexer;
 class convection;
@@ -29,9 +32,6 @@ class ghostcell;
 class ioflow;
 
 #include<fstream>
-
-#ifndef VORTICITY_H_
-#define VORTICITY_H_
 
 using namespace std;
 
@@ -43,9 +43,9 @@ public:
 	virtual void print_3D(lexer*, fdm*, ghostcell*,ofstream&)=0;
 
 
-    virtual void name_pvtu(lexer*, fdm*, ghostcell*,ofstream&)=0;
-    virtual void name_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &)=0;
-    virtual void offset_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &)=0;
+    virtual void name_pvtk(lexer*, fdm*, ghostcell*,ofstream&)=0;
+    virtual void name_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &)=0;
+    virtual void offset_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &)=0;
 };
 
 #endif

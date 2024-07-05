@@ -20,6 +20,9 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 Author: Hans Bihs
 --------------------------------------------------------------------*/
 
+#ifndef MULTIPHASE_F_H_
+#define MULTIPHASE_F_H_
+
 class fdm;
 class lexer;
 class convection;
@@ -41,9 +44,6 @@ class concentration;
 
 using namespace std;
 
-#ifndef MULTIPHASE_F_H_
-#define MULTIPHASE_F_H_
-
 class multiphase_f : public multiphase, public increment
 {
 public:
@@ -63,9 +63,9 @@ public:
     virtual void ls1get(int,int,int,double);
     virtual void ls2get(int,int,int,double);
 
-    virtual void name_pvtu(lexer*, fdm*, ghostcell*,ofstream&);
-    virtual void name_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
-    virtual void offset_vtu(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+    virtual void name_pvtk(lexer*, fdm*, ghostcell*,ofstream&);
+    virtual void name_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
+    virtual void offset_vtk(lexer*, fdm*, ghostcell*,ofstream&, int*, int &);
 	
 	void logic(lexer*,fdm*,ghostcell*);
 	
