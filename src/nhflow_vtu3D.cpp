@@ -274,10 +274,10 @@ void nhflow_vtu3D::start(lexer* p, fdm_nhf* d, ghostcell* pgc, ioflow *pflow, nh
     for(n=0;n<p->P85;++n)
     pforce_ale[n]->start(p,d,pgc);
 
-    /*
     if((p->simtime>p->probeprinttime && p->P55>0.0)  || (p->count==0 &&  p->P55>0.0))
     p->probeprinttime+=p->P55;
-
+    
+    /*
     if(p->P59==1)
     pbreaklog->write(p,d,pgc);
     */
